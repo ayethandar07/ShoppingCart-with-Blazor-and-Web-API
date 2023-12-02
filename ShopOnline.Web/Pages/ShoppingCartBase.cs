@@ -26,8 +26,7 @@ namespace ShopOnline.Web.Pages
             try
             {
                 ShoppingCartItems = await ShoppingCartService.GetItems(HardCoded.UserId);
-
-                CalculateShoppingCartSummaryTotals();
+                CartChanged();
 
             }
             catch (Exception ex)
@@ -36,13 +35,29 @@ namespace ShopOnline.Web.Pages
             }
         }
 
+        protected async Task MakeUpdateQtyButtonVisible(int id, bool visible)
+        {
+            var script = $@"
+                const updateQtyButton = document.querySelector(""button[data-itemId='{id}']"");
+                
+                console.log(updateQtyButton);
+                
+                if ({visible.ToString().ToLowerInvariant()}) {{
+                    updateQtyButton.style.display = 'inline-block';
+                }} else {{
+                    updateQtyButton.style.display = 'none';
+                }}
+            ";
+
+            await JS.InvokeVoidAsync("eval", script);
+        }
+
         protected async Task DeleteCartItem_Click(int id)
         {
             var cartItemDto = await ShoppingCartService.DeleteItem(id);
 
             RemoveCartItem(id);
-
-            CalculateShoppingCartSummaryTotals();
+            CartChanged();
         }
 
         protected async Task UpdateQtyCartItem_Click(int id, int qty)
@@ -61,7 +76,7 @@ namespace ShopOnline.Web.Pages
 
                     UpdateItemTotalPrice(returnedUpdateQty);
 
-                    CalculateShoppingCartSummaryTotals();
+                    CartChanged();
 
                     await MakeUpdateQtyButtonVisible(id, false);
 
@@ -77,21 +92,15 @@ namespace ShopOnline.Web.Pages
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
         protected async Task UpdateQty_Input(int id)
         {
             await MakeUpdateQtyButtonVisible(id, true);
-        }
-
-        private async Task MakeUpdateQtyButtonVisible(int id, bool visible)
-        {
-            await JS.InvokeVoidAsync("MakeUpdateQtyButtonVisible", id, visible);
         }
 
         private void CalculateShoppingCartSummaryTotals()
@@ -130,6 +139,12 @@ namespace ShopOnline.Web.Pages
             var cartItemDto = GetCartItem(id);
 
             ShoppingCartItems.Remove(cartItemDto);
+        }
+
+        private void CartChanged()
+        {
+            CalculateShoppingCartSummaryTotals();
+            ShoppingCartService.RaiseEventOnShoppingCartChanged(TotalQuantity);
         }
     }
 }
