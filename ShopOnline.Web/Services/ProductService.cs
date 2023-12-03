@@ -1,4 +1,4 @@
-﻿using ShopOnline.Models.Dtos;
+﻿using ShopOnline.Web.Dtos;
 using ShopOnline.Web.Services.Contracts;
 using System.Net.Http.Json;
 

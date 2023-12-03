@@ -2,7 +2,7 @@
 using ShopOnline.API.Data;
 using ShopOnline.API.Entities;
 using ShopOnline.API.Repositories.Contracts;
-using ShopOnline.Models.Dtos;
+using ShopOnline.API.Dtos;
 
 namespace ShopOnline.API.Repositories
 {

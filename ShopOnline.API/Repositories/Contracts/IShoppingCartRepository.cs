@@ -1,5 +1,5 @@
 ﻿using ShopOnline.API.Entities;
-using ShopOnline.Models.Dtos;
+using ShopOnline.API.Dtos;
 
 namespace ShopOnline.API.Repositories.Contracts
 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using ShopOnline.Models.Dtos;
+using ShopOnline.Web.Dtos;
 using ShopOnline.Web.Services.Contracts;
 
 namespace ShopOnline.Web.Pages
