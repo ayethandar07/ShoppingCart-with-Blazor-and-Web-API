@@ -13,7 +13,6 @@ Welcome to the Shopping Cart Web App repository! This project allows users to ad
 
 - ASP.NET Web API
 - Blazor
-- (Add other relevant technologies)
 
 ## Getting Started
 
